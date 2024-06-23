@@ -114,6 +114,26 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
   TreeNode? _centerTreeNode;
   TreeNode? _popUpNode;
   double _activeDepthRadius = -1;
+  late BoxConstraints _viewportConstraints;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.transformationController != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final x = Offset(_viewportConstraints.maxWidth * 0.8,
+            _viewportConstraints.maxHeight / 2);
+        final offset1 = widget.transformationController!.toScene(x);
+        widget.transformationController!.value.scale(0.9);
+        final offset2 = widget.transformationController!.toScene(x);
+        final dx = offset1.dx - offset2.dx;
+        final dy = offset1.dy - offset2.dy;
+        widget.transformationController!.value.translate(dx, dy);
+        if (mounted) setState(() {});
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,15 +145,18 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
     return InteractiveViewer(
       minScale: 0.1,
-      boundaryMargin: EdgeInsets.all(mediaQueryData.size.width / 4),
+      boundaryMargin: const EdgeInsets.all(42),
       maxScale: 5.0,
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
-      child: Padding(
-        padding: EdgeInsets.all(
-            (mediaQueryData.size.width / 2) * widget.spacingFactor),
+      constrained: false,
+      alignment: Alignment.center,
+      child: SizedBox(
+        width: mediaQueryData.size.width * 2,
+        height: mediaQueryData.size.height,
         child: LayoutBuilder(builder:
             (BuildContext context, BoxConstraints viewportConstraints) {
+          _viewportConstraints = viewportConstraints;
           final double spacing = (viewportConstraints.maxWidth / nodeDepth);
 
           _centerNodeSize = widget.centerNodeSize == null
