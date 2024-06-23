@@ -274,7 +274,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       _nodeTraverse(tNode);
     }
 
-    double baseAngle = 360 /
+    double baseAngle = 160 /
         _uiNodesRaw
             .where((uiR) =>
                 uiR.keys.first.treeNode.depth == 1 &&
