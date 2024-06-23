@@ -38,6 +38,7 @@ class ProgressionTreeMap extends StatefulWidget {
           const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
       this.interactiveViewClipBehavior = Clip.hardEdge,
       this.activeDepth,
+      this.outerCircleColor = Colors.grey,
       this.transformationController});
 
   @override
@@ -48,6 +49,9 @@ class ProgressionTreeMap extends StatefulWidget {
 
   /// How far apart to space the circle borders
   final double spacingFactor;
+
+  /// Color for the outer circle
+  final Color? outerCircleColor;
 
   /// Max number of circle borders to show
   final int maxDepthToShow;
@@ -206,17 +210,19 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                               child: _centerTreeNode!.child,
                             ),
                           ..._displayUiNodesWidgets(),
-                          ClipPath(
-                              clipper: HoleClipper(radius: _activeDepthRadius),
-                              clipBehavior: Clip.antiAlias,
-                              child: Container(
-                                width: viewportConstraints.maxWidth,
-                                height: viewportConstraints.maxHeight,
-                                decoration: const BoxDecoration(
-                                  color: Colors.grey,
-                                  backgroundBlendMode: BlendMode.saturation,
-                                ),
-                              ))
+                          if (widget.outerCircleColor != null)
+                            ClipPath(
+                                clipper:
+                                    HoleClipper(radius: _activeDepthRadius),
+                                clipBehavior: Clip.antiAlias,
+                                child: Container(
+                                  width: viewportConstraints.maxWidth,
+                                  height: viewportConstraints.maxHeight,
+                                  decoration: BoxDecoration(
+                                    color: widget.outerCircleColor,
+                                    backgroundBlendMode: BlendMode.saturation,
+                                  ),
+                                ))
                         ]),
                     if (_popUpNode != null && _popUpNode?.popUpWidget != null)
                       PopUpWidget(popUpNode: _popUpNode!)
