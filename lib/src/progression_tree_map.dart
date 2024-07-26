@@ -307,16 +307,29 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       if (nodeMap.keys.first.nodePosition == NodePosition.start) {
         TreeNode keyNode = nodeMap.keys.first.treeNode;
         if (keyNode.depth == 1) {
-          keyNode = keyNode.copyWith(
-              angle: baseAngle * increment,
-              offset: Offset(
+          final calculatedOffset = switch (keyNode.depth) {
+            1 => Offset(
                 ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
                     ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
                         math.sin(vector.radians(baseAngle * increment))),
                 ((viewportConstraints.maxHeight / 2 - (keyNode.size! / 2)) +
                     ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
                         math.cos(vector.radians(baseAngle * increment))),
-              ));
+              ),
+            _ => Offset(
+                ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
+                    ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
+                        math.sin(vector.radians(baseAngle * increment))),
+                ((viewportConstraints.maxHeight / 2 - (keyNode.size! / 2)) +
+                    ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
+                        math.cos(vector.radians(baseAngle * increment))),
+              ),
+          };
+          print(
+              'By depth: ${keyNode.depth} Calculated offset: $calculatedOffset');
+
+          keyNode = keyNode.copyWith(
+              angle: baseAngle * increment, offset: calculatedOffset);
           increment++;
         }
         List<TreeNode> valueNodes =
@@ -346,28 +359,45 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           keyNodes.forEachIndexed((ind, vNode) {
             double vnAngle = (mp!.keys.first.angle -
                 (15 * widget.nodeSeparationAngleFac) * ind);
+            print(
+                'CUrrent index: $ind keynotes length: ${keyNodes.length} keynodes: $keyNode');
+
             if (keyNodes.length > 1) {
               vnAngle = MathHelpers.clampRange(
                   percentage: (((ind + 1) / keyNodes.length) * 100),
                   min: (mp.keys.first.angle) -
-                      ((15 * widget.nodeSeparationAngleFac) *
+                      (((ind >= 3 ? 45 : 15) * widget.nodeSeparationAngleFac) *
                           (keyNodes.length / 2)),
                   max: (mp.keys.first.angle) +
-                      ((15 * widget.nodeSeparationAngleFac) *
+                      (((ind >= 3 ? 45 : 15) * widget.nodeSeparationAngleFac) *
                           (keyNodes.length / 2)));
             }
 
             if (vNode == keyNode) {
-              keyNode = vNode.copyWith(
-                  angle: vnAngle,
-                  offset: Offset(
+              final calculatedOffset = switch (vNode.depth) {
+                1 => Offset(
+                    ((viewportConstraints.maxWidth / 2 - (vNode.size! / 2)) +
+                        (((vNode.depth) * spacing) - _nodePositionFactor) *
+                            math.sin(vector.radians(vnAngle))),
+                    ((viewportConstraints.maxHeight / 2 - (vNode.size! / 2)) +
+                        (((vNode.depth) * spacing) - _nodePositionFactor) *
+                            math.cos(vector.radians(vnAngle))),
+                  ),
+                _ => Offset(
                     ((viewportConstraints.maxWidth / 2 - (vNode.size! / 2)) +
                         (((vNode.depth) * spacing / 2) - _nodePositionFactor) *
                             math.sin(vector.radians(vnAngle))),
                     ((viewportConstraints.maxHeight / 2 - (vNode.size! / 2)) +
                         (((vNode.depth) * spacing / 2) - _nodePositionFactor) *
                             math.cos(vector.radians(vnAngle))),
-                  ));
+                  ),
+              };
+              print(
+                  'By depth: ${vNode.depth} Calculated offset: $calculatedOffset');
+              keyNode = vNode.copyWith(
+                angle: vnAngle,
+                offset: calculatedOffset,
+              );
             }
           });
         }
