@@ -127,7 +127,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         final offset1 = widget.transformationController!.toScene(x);
         widget.transformationController!.value.scale(0.9);
         final offset2 = widget.transformationController!.toScene(x);
-        final dx = offset1.dx - offset2.dx;
+        final dx = offset1.dx - offset2.dx - 100;
         final dy = offset1.dy - offset2.dy;
         widget.transformationController!.value.translate(dx, dy);
         if (mounted) setState(() {});
