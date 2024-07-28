@@ -129,7 +129,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         final offset1 = widget.transformationController!.toScene(x);
         widget.transformationController!.value.scale(0.9);
         final offset2 = widget.transformationController!.toScene(x);
-        final dx = offset1.dx - offset2.dx - 100;
+        final dx = offset1.dx - offset2.dx;
         final dy = offset1.dy - offset2.dy;
         widget.transformationController!.value.translate(dx, dy);
         if (mounted) setState(() {});
@@ -137,9 +137,23 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
     }
   }
 
+  Widget _sizedBoxDependingOnPlatform({required Widget child}) {
+    final Size mediaQueryData = MediaQuery.sizeOf(context);
+
+    return Platform.isMacOS
+        ? SizedBox.square(
+            dimension: mediaQueryData.width + 84,
+            child: child,
+          )
+        : SizedBox(
+            width: mediaQueryData.width + 84,
+            height: mediaQueryData.height,
+            child: child,
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size mediaQueryData = MediaQuery.sizeOf(context);
     final int treeNodeDepth = _treeNodeDepth(widget.treeNodes.values.first);
     final int nodeDepth = widget.maxDepthToShow > treeNodeDepth
         ? treeNodeDepth
@@ -153,8 +167,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       clipBehavior: widget.interactiveViewClipBehavior,
       constrained: false,
       alignment: Alignment.center,
-      child: SizedBox.square(
-        dimension: mediaQueryData.width * 84,
+      child: _sizedBoxDependingOnPlatform(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             _viewportConstraints = viewportConstraints;

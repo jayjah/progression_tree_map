@@ -1,6 +1,6 @@
 name: progression_tree_map
 description: This is  a visual representation tool that helps users track and understand the development or growth of a process or a concept.
-version: 1.2.4
+version: 1.2.5
 homepage: https://github.com/Frankline-Sable/progression_tree_map
 
 environment:
