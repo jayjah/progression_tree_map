@@ -20,6 +20,8 @@ class TreeNode {
   /// The position of the node in relation to the center node
   final int depth;
 
+  final int? firstChildPos;
+
   /// Configures the node decoration
   final BoxDecoration? decoration;
 
@@ -42,6 +44,7 @@ class TreeNode {
       this.partnerWidget,
       this.partnerWidgetOffset,
       this.size,
+      this.firstChildPos,
       this.popUpWidget});
 
   TreeNode copyWith(
@@ -55,6 +58,7 @@ class TreeNode {
       Widget? partnerWidget,
       Offset? partnerWidgetOffset,
       BoxDecoration? decoration,
+      int? firstChildPos,
       Widget? popUpWidget}) {
     return TreeNode(
         child: child ?? this.child,
@@ -66,6 +70,7 @@ class TreeNode {
         partnerWidgetOffset: partnerWidgetOffset ?? this.partnerWidgetOffset,
         angle: angle ?? this.angle,
         decoration: decoration ?? this.decoration,
+        firstChildPos: firstChildPos ?? this.firstChildPos,
         popUpWidget: popUpWidget ?? this.popUpWidget);
   }
 }

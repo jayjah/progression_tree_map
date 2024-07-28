@@ -307,29 +307,33 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       if (nodeMap.keys.first.nodePosition == NodePosition.start) {
         TreeNode keyNode = nodeMap.keys.first.treeNode;
         if (keyNode.depth == 1) {
-          final calculatedOffset = switch (keyNode.depth) {
-            1 => Offset(
-                ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
-                    ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
-                        math.sin(vector.radians(baseAngle * increment))),
-                ((viewportConstraints.maxHeight / 2 - (keyNode.size! / 2)) +
-                    ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
-                        math.cos(vector.radians(baseAngle * increment))),
-              ),
+          final Offset calculatedOffset = switch (keyNode.firstChildPos) {
+            final int pos => () {
+                baseAngle = (360 / 8 - 50) * pos;
+                print('DEBUG :: own calculation');
+                return Offset(
+                  ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
+                      ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
+                          math.sin(vector.radians(baseAngle))),
+                  ((viewportConstraints.maxHeight / 2 - (keyNode.size! / 2)) +
+                      ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
+                          math.cos(vector.radians(baseAngle))),
+                );
+              }(),
             _ => Offset(
                 ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
                     ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
-                        math.sin(vector.radians(baseAngle * increment))),
+                        math.sin(vector.radians(baseAngle))),
                 ((viewportConstraints.maxHeight / 2 - (keyNode.size! / 2)) +
                     ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
-                        math.cos(vector.radians(baseAngle * increment))),
+                        math.cos(vector.radians(baseAngle))),
               ),
           };
           print(
               'By depth: ${keyNode.depth} Calculated offset: $calculatedOffset');
 
-          keyNode = keyNode.copyWith(
-              angle: baseAngle * increment, offset: calculatedOffset);
+          keyNode =
+              keyNode.copyWith(angle: baseAngle, offset: calculatedOffset);
           increment++;
         }
         List<TreeNode> valueNodes =
@@ -363,14 +367,19 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                 'CUrrent index: $ind keynotes length: ${keyNodes.length} keynodes: $keyNode');
 
             if (keyNodes.length > 1) {
-              vnAngle = MathHelpers.clampRange(
-                  percentage: (((ind + 1) / keyNodes.length) * 100),
-                  min: (mp.keys.first.angle) -
-                      (((ind >= 3 ? 45 : 15) * widget.nodeSeparationAngleFac) *
-                          (keyNodes.length / 2)),
-                  max: (mp.keys.first.angle) +
-                      (((ind >= 3 ? 45 : 15) * widget.nodeSeparationAngleFac) *
-                          (keyNodes.length / 2)));
+              final min = (mp.keys.first.angle) -
+                  ((15 * widget.nodeSeparationAngleFac) *
+                      (keyNodes.length / 2));
+              final max = (mp.keys.first.angle) +
+                  ((15 * widget.nodeSeparationAngleFac) *
+                      (keyNodes.length / 2));
+              final perc = (((ind + 1) / keyNodes.length) * 100);
+              double angle = (360 / 8 - 50) * ind;
+              double angle1 = ((ind + 1) * (math.pi * 2)) / 8;
+              vnAngle =
+                  MathHelpers.clampRange(percentage: perc, min: min, max: max);
+              print(
+                  'GIVEN ANGLE: ${mp.keys.first.angle} KEYNODES: ${keyNodes.length} MIN: $min \n MAX: $max \n PERC: $perc \n ANGLE: $vnAngle CALCULATEDANGLE: $angle1');
             }
 
             if (vNode == keyNode) {
