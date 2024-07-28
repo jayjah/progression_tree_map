@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'classes/node_container.dart';
 import 'classes/tree_node.dart';
@@ -144,16 +146,15 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         : (widget.maxDepthToShow < 1 ? treeNodeDepth : widget.maxDepthToShow);
 
     return InteractiveViewer(
-      minScale: 0.8,
+      minScale: 0.6,
       boundaryMargin: const EdgeInsets.all(42),
-      maxScale: 2.0,
+      maxScale: Platform.isMacOS ? 3.0 : 2.0,
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
       constrained: false,
       alignment: Alignment.center,
-      child: SizedBox(
-        width: mediaQueryData.width * 2,
-        height: mediaQueryData.height,
+      child: SizedBox.square(
+        dimension: mediaQueryData.width * 84,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
             _viewportConstraints = viewportConstraints;
