@@ -375,21 +375,13 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
           List<TreeNode> keyNodes = mp.values.first.map((e) => e).toList();
           keyNodes.forEachIndexed((ind, vNode) {
-            double vnAngle = 0.0;
-            if (vNode.combiner) {
-              ind = 1;
-              final existedNode = _findNode(vNode);
-              vnAngle = existedNode?.angle ?? 0.0;
-              if (vnAngle != 0.0) vnAngle = vnAngle + 7.5;
-              print('GOT COMBINER WITH $existedNode');
-            } else
-              vnAngle = (mp!.keys.first.angle -
-                  (15 * widget.nodeSeparationAngleFac) * ind);
+            double vnAngle = (mp!.keys!.first.angle -
+                (15 * widget.nodeSeparationAngleFac) * ind);
             print(
                 'CUrrent index: $ind keynotes length: ${keyNodes.length} keynodes: $keyNode');
 
             if (keyNodes.length > 1) {
-              final min = (mp!.keys.first.angle) -
+              final min = (mp!.keys!.first.angle) -
                   ((15 * widget.nodeSeparationAngleFac) *
                       (keyNodes.length / 2));
               final max = (mp.keys.first.angle) +
@@ -401,7 +393,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
               vnAngle =
                   MathHelpers.clampRange(percentage: perc, min: min, max: max);
               print(
-                  'GIVEN ANGLE: ${mp.keys.first.angle} KEYNODES: ${keyNodes.length} MIN: $min \n MAX: $max \n PERC: $perc \n ANGLE: $vnAngle CALCULATEDANGLE: $angle1');
+                  'GIVEN ANGLE: ${mp!.keys.first.angle} KEYNODES: ${keyNodes.length} MIN: $min \n MAX: $max \n PERC: $perc \n ANGLE: $vnAngle CALCULATEDANGLE: $angle1');
             }
 
             if (vNode == keyNode) {
