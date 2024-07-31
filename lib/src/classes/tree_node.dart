@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 /// This is the individual node that forms the tree
 class TreeNode {
+  final String? id;
+  final bool combiner;
   final String? name;
   final String? content;
   final Widget? icon;
@@ -53,6 +55,8 @@ class TreeNode {
     this.name,
     this.content,
     this.icon,
+    this.id,
+    this.combiner = false,
   });
 
   TreeNode copyWith({
@@ -71,6 +75,7 @@ class TreeNode {
     Widget? icon,
     String? name,
     String? content,
+    bool? combiner,
   }) {
     return TreeNode(
       child: child ?? this.child,
@@ -87,6 +92,8 @@ class TreeNode {
       name: name ?? this.name,
       content: content ?? this.content,
       icon: icon ?? this.icon,
+      combiner: combiner ?? this.combiner,
+      id: id ?? this.id,
     );
   }
 }

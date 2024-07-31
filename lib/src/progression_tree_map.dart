@@ -375,13 +375,21 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
           List<TreeNode> keyNodes = mp.values.first.map((e) => e).toList();
           keyNodes.forEachIndexed((ind, vNode) {
-            double vnAngle = (mp!.keys.first.angle -
-                (15 * widget.nodeSeparationAngleFac) * ind);
+            double vnAngle = 0.0;
+            if (vNode.combiner) {
+              ind = 1;
+              final existedNode = _findNode(vNode);
+              vnAngle = existedNode?.angle ?? 0.0;
+              if (vnAngle != 0.0) vnAngle = vnAngle + 7.5;
+              print('GOT COMBINER WITH $existedNode');
+            } else
+              vnAngle = (mp!.keys.first.angle -
+                  (15 * widget.nodeSeparationAngleFac) * ind);
             print(
                 'CUrrent index: $ind keynotes length: ${keyNodes.length} keynodes: $keyNode');
 
             if (keyNodes.length > 1) {
-              final min = (mp.keys.first.angle) -
+              final min = (mp!.keys.first.angle) -
                   ((15 * widget.nodeSeparationAngleFac) *
                       (keyNodes.length / 2));
               final max = (mp.keys.first.angle) +
@@ -436,8 +444,15 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       TreeNode keyNode = uiNode.keys.first;
       List<TreeNode> valueNodes = uiNode.values.first.map((e) => e).toList();
       valueNodes = valueNodes.mapIndexed((ind, vNode) {
-        double vnAngle =
-            (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind);
+        double vnAngle = 0.0;
+        if (vNode.combiner) {
+          ind = 1;
+          final existedNode = _findNode(vNode);
+          vnAngle = existedNode?.angle ?? 0.0;
+          print('1GOT COMBINER WITH $existedNode');
+        } else
+          vnAngle =
+              (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind);
 
         if (valueNodes.length > 1) {
           vnAngle = MathHelpers.clampRange(
@@ -464,6 +479,21 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
       return {keyNode: valueNodes};
     }).toList();
+  }
+
+  TreeNode? _findNode(TreeNode tNode) {
+    for (final node in _uiNodesPrep) {
+      for (final value in node.values) {
+        final obj =
+            value.firstWhereOrNull((e) => e.id != null && e.id == tNode.id);
+        if (obj != null) return obj;
+      }
+      for (final key in node.keys) {
+        if (key.id == null) continue;
+        if (tNode.id == key.id) return key;
+      }
+    }
+    return null;
   }
 
   void _nodeTraverse(TreeNode tNode) {
