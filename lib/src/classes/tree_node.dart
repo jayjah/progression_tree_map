@@ -15,13 +15,13 @@ class TreeNode {
   final List<TreeNode> nodes;
 
   /// The offset of the node
-  final Offset offset;
+  Offset offset;
 
   /// The [Size] of the node
   final double? size;
 
   /// The angle to rotate the node
-  final double angle;
+  double angle;
 
   /// The position of the node in relation to the center node
   final int depth;
@@ -40,7 +40,7 @@ class TreeNode {
   /// The popup widget to show when the node is tapped
   final Widget? popUpWidget;
 
-  const TreeNode({
+  TreeNode({
     this.child,
     this.nodes = const [],
     this.offset = Offset.zero,
@@ -58,6 +58,15 @@ class TreeNode {
     this.id,
     this.combiner = false,
   });
+
+  TreeNode updateWith({
+    Offset? offset,
+    double? angle,
+  }) {
+    if (angle != null) this.angle = angle;
+    if (offset != null) this.offset = offset;
+    return this;
+  }
 
   TreeNode copyWith({
     Widget? child,
@@ -95,5 +104,10 @@ class TreeNode {
       combiner: combiner ?? this.combiner,
       id: id ?? this.id,
     );
+  }
+
+  @override
+  String toString() {
+    return 'TreeNode{id: $id, combiner: $combiner, name: $name, content: $content, angle: $angle, offset: $offset}';
   }
 }

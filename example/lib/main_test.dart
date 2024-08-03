@@ -123,6 +123,92 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
     return result;
   }*/
 
+  late final _togetherNode = TreeNode(
+    id: 'tester',
+    combiner: true,
+    child: GestureDetector(
+        onTap: () {
+          print('TAP ON TESTER');
+        },
+        child: Image(image: AssetImage('assets/images/katze_main.png'))),
+    nodes: [
+      _togetherNode2,
+    ],
+  );
+  final _togetherNode2 = TreeNode(
+    id: 'tester2',
+    combiner: true,
+    child: GestureDetector(
+        onTap: () {
+          print('TAP ON TESTER2');
+        },
+        child: Image(image: AssetImage('assets/images/katze_main.png'))),
+    /*nodes: [
+    TreeNode(
+      child: Image(image: AssetImage('assets/images/katze_main.png')),
+    ),
+  ],*/
+  );
+
+  late final Map<TreeNode?, List<TreeNode>> turnVaultMove = {
+    TreeNode(
+      depth: 10,
+      child: Material(
+        color: Colors.black,
+        borderRadius: const BorderRadius.all(Radius.circular(36)),
+        child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(36)),
+            onTap: () {
+              print('tapped');
+            },
+            child: Image(image: AssetImage('assets/images/katze_main.png'))),
+      ),
+    ): [
+      TreeNode(
+        firstChildPos: 4,
+        child: Image(image: AssetImage('assets/images/katze_main.png')),
+        nodes: [
+          TreeNode(
+            child: Image(image: AssetImage('assets/images/katze_main.png')),
+            nodes: [
+              _togetherNode,
+            ],
+          ),
+          TreeNode(
+            child: Image(image: AssetImage('assets/images/katze_main.png')),
+            nodes: [
+              TreeNode(
+                child: Image(image: AssetImage('assets/images/katze_main.png')),
+                nodes: [_togetherNode2],
+              ),
+              _togetherNode,
+            ],
+          ),
+        ],
+      ),
+      TreeNode(
+        firstChildPos: 22,
+        child: Image(image: AssetImage('assets/images/katze_main.png')),
+        nodes: [],
+      ),
+      TreeNode(
+        firstChildPos: -14,
+        child: Image(image: AssetImage('assets/images/katze_main.png')),
+        nodes: [],
+      ),
+      TreeNode(
+        firstChildPos: 40,
+        child: Image(image: AssetImage('assets/images/katze_main.png')),
+        nodes: [],
+      ),
+      TreeNode(
+        firstChildPos: 49,
+        child: Image(image: AssetImage('assets/images/katze_main.png')),
+        nodes: [],
+      ),
+    ],
+  };
+
   final Map<TreeNode?, List<TreeNode>> nodes = {
     TreeNode(
       child: Material(
@@ -224,7 +310,7 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
-      treeNodes: nodes,
+      treeNodes: turnVaultMove,
       transformationController: _controller,
       circleBoundaryColor: Colors.grey.shade900,
       circleBoundaryShade: false,
