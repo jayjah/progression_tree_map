@@ -444,7 +444,8 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           final existedNode = _findNode(vNode);
           vnAngle = existedNode?.angle ?? 0.0;
           print('1GOT COMBINER WITH $existedNode');
-          final parents = _findParentsOf(vNode);
+          final parents = _findParentsOfIn(vNode, total);
+          print('PARENTS BY ID ${vNode.id} THIRD $parents');
           print('1GOT COMBINER WITH PARENTS$parents');
           print('1GOT COMBINER WITH ${existedNode?.offset}');
           //if (existedNode?.offset != Offset.zero) return null;
@@ -456,12 +457,25 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
             print(
                 'calculated atan angle $angle4 with given angle: ${existedNode?.angle} childs: ${valueNodes.length}');
 
-            vnAngle = angle4 - 5;
+            if (vNode.useCustomAngleCalculation) {
+              print('custom calculation');
+              vnAngle = angle4 - 5;
+            } else {
+              print('default calculation with: ${keyNode.angle}');
+              vnAngle =
+                  (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind) +
+                      20;
+            }
+
+            print('1Angle $vnAngle');
           } else
             vnAngle = existedNode?.angle ?? 0.0;
+          print('2Angle $vnAngle');
         } else
           vnAngle =
               (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind);
+
+        print('3Angle $vnAngle');
 
         if (valueNodes.length > 1 && !vNode.combiner) {
           vnAngle = MathHelpers.clampRange(
@@ -474,6 +488,8 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                       (valueNodes.length / 2)));
         }
 
+        print('Angle is $vnAngle');
+
         final endNode = vNode.updateWith(
             angle: vnAngle,
             offset: Offset(
@@ -484,12 +500,14 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                   (((vNode.depth) * spacing / 2) - _nodePositionFactor) *
                       math.cos(vector.radians(vnAngle))),
             ));
-        if (!duplicates.any((e) => e.id == vNode.id)) duplicates.add(vNode);
+        if (!duplicates.any((e) => e.id == endNode.id && endNode.combiner))
+          duplicates.add(endNode);
 
         return endNode;
       }).toList();
 
-      print('duplicates length: ${duplicates.length}');
+      print(
+          'duplicates length: ${duplicates.length} all duplicates: ${duplicates}');
       for (int i = 0; i < valueNodes.length; i++) {
         final e = valueNodes.elementAt(i);
         if (e.combiner) {
@@ -512,6 +530,25 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       if (node.id != null && node.id == tNode.id && node != tNode) return node;
     }
     return null;
+  }
+
+  List<TreeNode> _findParentsOfIn(
+      TreeNode tNode, List<Map<TreeNode, List<TreeNode>>> nodes) {
+    final parents = <TreeNode>[];
+    for (final node in nodes) {
+      print('Finding parents of ${tNode.id} in nodes $node');
+      for (final noder in node.keys) {
+        if (node[noder]?.any((e) {
+              return e.id != null && tNode.id == e.id;
+            }) ??
+            false) {
+          parents.add(noder);
+          print('FOUND PARENT: ${noder}');
+        }
+      }
+    }
+
+    return parents;
   }
 
   List<TreeNode> _findParentsOf(TreeNode tNode) {
