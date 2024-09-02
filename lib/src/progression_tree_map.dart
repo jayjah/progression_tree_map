@@ -285,7 +285,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       nodeDepthTraverse(node.nodes);
       pathDepth[index] = count;
     });
-    return math.max(pathDepth.values.max, 4);
+    return math.max(pathDepth.values.max, 5);
   }
 
   int _nodeDepth = 0;
