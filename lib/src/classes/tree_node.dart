@@ -28,6 +28,7 @@ class TreeNode {
   final int depth;
 
   final int? firstChildPos;
+  final int? childPos;
 
   /// Configures the node decoration
   final BoxDecoration? decoration;
@@ -59,6 +60,7 @@ class TreeNode {
     this.icon,
     this.id,
     this.combiner = false,
+    this.childPos,
   });
 
   TreeNode updateWith({
@@ -88,6 +90,7 @@ class TreeNode {
     String? content,
     bool? combiner,
     bool? useCustomAngleCalculation,
+    int? childPos,
   }) {
     return TreeNode(
       useCustomAngleCalculation:
@@ -108,6 +111,7 @@ class TreeNode {
       icon: icon ?? this.icon,
       combiner: combiner ?? this.combiner,
       id: id ?? this.id,
+      childPos: childPos ?? this.childPos,
     );
   }
 

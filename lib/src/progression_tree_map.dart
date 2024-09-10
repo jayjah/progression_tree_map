@@ -399,6 +399,11 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
             }
 
             if (vNode == keyNode) {
+              vnAngle = switch (vNode.childPos) {
+                final int pos => (360 / 8 - 50) * pos,
+                _ => vnAngle,
+              };
+
               final calculatedOffset = switch (vNode.depth) {
                 1 => Offset(
                     ((viewportConstraints.maxWidth / 2 - (vNode.size! / 2)) +
@@ -487,6 +492,11 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                   ((15 * widget.nodeSeparationAngleFac) *
                       (valueNodes.length / 2)));
         }
+
+        vnAngle = switch (vNode.childPos) {
+          final int pos => (360 / 8 - 50) * pos,
+          _ => vnAngle,
+        };
 
         print('Angle is $vnAngle');
 
