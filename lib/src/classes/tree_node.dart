@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// This is the individual node that forms the tree
 class TreeNode {
   final bool useCustomAngleCalculation;
+  final String? uniqueId;
   final String? id;
   final bool combiner;
   final String? name;
@@ -61,6 +62,7 @@ class TreeNode {
     this.id,
     this.combiner = false,
     this.childPos,
+    this.uniqueId,
   });
 
   TreeNode updateWith({
@@ -91,6 +93,7 @@ class TreeNode {
     bool? combiner,
     bool? useCustomAngleCalculation,
     int? childPos,
+    String? uniqueId,
   }) {
     return TreeNode(
       useCustomAngleCalculation:
@@ -112,6 +115,7 @@ class TreeNode {
       combiner: combiner ?? this.combiner,
       id: id ?? this.id,
       childPos: childPos ?? this.childPos,
+      uniqueId: uniqueId ?? this.uniqueId,
     );
   }
 
