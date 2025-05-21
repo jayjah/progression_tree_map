@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
@@ -158,7 +157,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
     return InteractiveViewer(
       minScale: 0.6,
       boundaryMargin: const EdgeInsets.all(42),
-      maxScale: Platform.isMacOS ? 3.0 : 2.0,
+      maxScale: 2.0,
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
       constrained: false,
