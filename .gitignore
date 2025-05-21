@@ -1,4 +1,7 @@
 # Miscellaneous
+**/.cxx/**
+/.cxx/
+
 *.class
 *.log
 *.pyc

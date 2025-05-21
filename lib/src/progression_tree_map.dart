@@ -1,15 +1,16 @@
 import 'dart:io';
+import 'dart:math' as math;
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math.dart' as vector;
+
 import 'classes/node_container.dart';
 import 'classes/tree_node.dart';
 import 'enums/node_position.dart';
-import 'extensions/nums.dart';
-import 'extensions/colors.dart';
-import 'package:collection/collection.dart';
-import 'dart:math' as math;
-import 'package:vector_math/vector_math.dart' as vector;
 import 'enums/nodes_placement.dart';
+import 'extensions/colors.dart';
+import 'extensions/nums.dart';
 import 'helpers/helpers.dart';
 import 'widgets/circular_boundaries.dart';
 import 'widgets/connecting_line.dart';
@@ -122,34 +123,29 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
   void initState() {
     super.initState();
 
-    if (widget.transformationController != null) {
+    /*if (widget.transformationController != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        final x = Offset(_viewportConstraints.maxWidth * 0.8,
+        final x = ORffset(_viewportConstraints.maxWidth / 2,
             _viewportConstraints.maxHeight / 2);
         final offset1 = widget.transformationController!.toScene(x);
-        widget.transformationController!.value.scale(0.9);
+        widget.transformationController!.value.scale(0.8);
         final offset2 = widget.transformationController!.toScene(x);
         final dx = offset1.dx - offset2.dx;
         final dy = offset1.dy - offset2.dy;
-        widget.transformationController!.value.translate(dx, dy);
+        widget.transformationController!.value.translate(-dx, -dy);
         if (mounted) setState(() {});
       });
-    }
+    }*/
   }
 
   Widget _sizedBoxDependingOnPlatform({required Widget child}) {
     final Size mediaQueryData = MediaQuery.sizeOf(context);
 
-    return Platform.isMacOS
-        ? SizedBox.square(
-            dimension: mediaQueryData.width + 84,
-            child: child,
-          )
-        : SizedBox(
-            width: mediaQueryData.width + 84,
-            height: mediaQueryData.height,
-            child: child,
-          );
+    return SizedBox(
+      width: mediaQueryData.width,
+      height: mediaQueryData.height,
+      child: child,
+    );
   }
 
   @override
@@ -223,10 +219,11 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                           }),
                           CustomPaint(
                             painter: ConnectingLine(
-                                uiNodesPrep: _uiNodesPrep,
-                                color: widget.linesStrokeColor,
-                                strokeWidth: widget.linesStrokeWidth,
-                                startFromCenter: _linesStartFromOrigin),
+                              uiNodesPrep: _uiNodesPrep,
+                              color: widget.linesStrokeColor,
+                              strokeWidth: widget.linesStrokeWidth,
+                              startFromCenter: _linesStartFromOrigin,
+                            ),
                             size: viewportConstraints.biggest,
                           ),
                           if (_centerTreeNode != null)
@@ -326,7 +323,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           final Offset calculatedOffset = switch (keyNode.firstChildPos) {
             final int pos => () {
                 baseAngle = (360 / 8 - 50) * pos;
-                print('DEBUG :: own calculation');
                 return Offset(
                   ((viewportConstraints.maxWidth / 2 - (keyNode.size! / 2)) +
                       ((keyNode.depth * spacing / 2) - _nodePositionFactor) *
@@ -345,8 +341,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                         math.cos(vector.radians(baseAngle))),
               ),
           };
-          print(
-              'By depth: ${keyNode.depth} Calculated offset: $calculatedOffset');
 
           keyNode =
               keyNode.updateWith(angle: baseAngle, offset: calculatedOffset);
@@ -379,8 +373,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           keyNodes.forEachIndexed((ind, vNode) {
             double vnAngle = (mp!.keys!.first.angle -
                 (15 * widget.nodeSeparationAngleFac) * ind);
-            print(
-                'CUrrent index: $ind keynotes length: ${keyNodes.length} keynodes: $keyNode');
 
             if (keyNodes.length > 1) {
               final min = (mp!.keys!.first.angle) -
@@ -390,12 +382,8 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                   ((15 * widget.nodeSeparationAngleFac) *
                       (keyNodes.length / 2));
               final perc = (((ind + 1) / keyNodes.length) * 100);
-              double angle = (360 / 8 - 50) * ind;
-              double angle1 = ((ind + 1) * (math.pi * 2)) / 8;
               vnAngle =
                   MathHelpers.clampRange(percentage: perc, min: min, max: max);
-              print(
-                  'GIVEN ANGLE: ${mp!.keys.first.angle} KEYNODES: ${keyNodes.length} MIN: $min \n MAX: $max \n PERC: $perc \n ANGLE: $vnAngle CALCULATEDANGLE: $angle1');
             }
 
             if (vNode == keyNode) {
@@ -422,8 +410,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                             math.cos(vector.radians(vnAngle))),
                   ),
               };
-              print(
-                  'By depth: ${vNode.depth} Calculated offset: $calculatedOffset');
               keyNode = vNode.updateWith(
                 angle: vnAngle,
                 offset: calculatedOffset,
@@ -448,39 +434,26 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           //ind = 1;
           final existedNode = _findNode(vNode);
           vnAngle = existedNode?.angle ?? 0.0;
-          print('1GOT COMBINER WITH $existedNode');
           final parents = _findParentsOfIn(vNode, total);
-          print('PARENTS BY ID ${vNode.id} THIRD $parents');
-          print('1GOT COMBINER WITH PARENTS$parents');
-          print('1GOT COMBINER WITH ${existedNode?.offset}');
           //if (existedNode?.offset != Offset.zero) return null;
           if (parents.length == 2) {
             final firstParent = parents.first.offset;
             final secondParent = parents.last.offset;
             final angle4 = math.atan2(firstParent.dy, firstParent.dx) -
                 math.atan2(secondParent.dy, secondParent.dx);
-            print(
-                'calculated atan angle $angle4 with given angle: ${existedNode?.angle} childs: ${valueNodes.length}');
 
             if (vNode.useCustomAngleCalculation) {
-              print('custom calculation');
               vnAngle = angle4 - 5;
             } else {
-              print('default calculation with: ${keyNode.angle}');
               vnAngle =
                   (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind) +
                       20;
             }
-
-            print('1Angle $vnAngle');
           } else
             vnAngle = existedNode?.angle ?? 0.0;
-          print('2Angle $vnAngle');
         } else
           vnAngle =
               (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind);
-
-        print('3Angle $vnAngle');
 
         if (valueNodes.length > 1 && !vNode.combiner) {
           vnAngle = MathHelpers.clampRange(
@@ -498,8 +471,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           _ => vnAngle,
         };
 
-        print('Angle is $vnAngle');
-
         final endNode = vNode.updateWith(
             angle: vnAngle,
             offset: Offset(
@@ -516,14 +487,11 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         return endNode;
       }).toList();
 
-      print(
-          'duplicates length: ${duplicates.length} all duplicates: ${duplicates}');
       for (int i = 0; i < valueNodes.length; i++) {
         final e = valueNodes.elementAt(i);
         if (e.combiner) {
           for (final duplicate in duplicates) {
             if (e.id == duplicate.id) {
-              print('Replacing $e with $duplicate');
               valueNodes.removeAt(i);
               valueNodes.insert(
                   i, duplicate.updateWith(offset: e.offset, angle: e.angle));
@@ -546,14 +514,12 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
       TreeNode tNode, List<Map<TreeNode, List<TreeNode>>> nodes) {
     final parents = <TreeNode>[];
     for (final node in nodes) {
-      print('Finding parents of ${tNode.id} in nodes $node');
       for (final noder in node.keys) {
         if (node[noder]?.any((e) {
               return e.id != null && tNode.id == e.id;
             }) ??
             false) {
           parents.add(noder);
-          print('FOUND PARENT: ${noder}');
         }
       }
     }
@@ -564,14 +530,12 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
   List<TreeNode> _findParentsOf(TreeNode tNode) {
     final parents = <TreeNode>[];
     for (final node in _uiNodesPrep) {
-      print('Finding parents of ${tNode.id} in nodes $node');
       for (final noder in node.keys) {
         if (node[noder]?.any((e) {
               return e.id != null && tNode.id == e.id;
             }) ??
             false) {
           parents.add(noder);
-          print('FOUND PARENT: ${noder}');
         }
       }
     }
