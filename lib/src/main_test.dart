@@ -225,22 +225,21 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
     final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
       treeNodes: nodes,
-      transformationController: _controller,
       circleBoundaryColor: Colors.grey.shade900,
       circleBoundaryShade: false,
       spacingFactor: 1.0,
       nodeSeparationAngleFac: 2.0,
       linesStartFromOrigin: true,
       outerCircleColor: null,
-      globalNodeSize: 120,
-      centerNodeSize: 155,
+      globalNodeSize: 40,
+      centerNodeSize: 45,
       linesStrokeWidth: 3,
       linesStrokeColor: Colors.grey,
       nodePlacement: NodesPlacement.centerOut,
       interactiveViewClipBehavior: Clip.none,
       nodeDecoration: const BoxDecoration(shape: BoxShape.circle),
-      activeDepth: 3,
-      maxDepthToShow: 8,
+      activeDepth: 5,
+      maxDepthToShow: 5,
     );
   }
 }

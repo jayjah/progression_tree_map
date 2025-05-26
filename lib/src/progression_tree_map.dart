@@ -141,6 +141,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
     final Size mediaQueryData = MediaQuery.sizeOf(context);
 
     return SizedBox(
+      //dimension: math.max(mediaQueryData.width, mediaQueryData.height),
       width: mediaQueryData.width,
       height: mediaQueryData.height,
       child: child,
@@ -155,9 +156,9 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         : (widget.maxDepthToShow < 1 ? treeNodeDepth : widget.maxDepthToShow);
 
     return InteractiveViewer(
-      minScale: 0.6,
-      boundaryMargin: const EdgeInsets.all(42),
-      maxScale: 2.0,
+      minScale: 0.8,
+      boundaryMargin: const EdgeInsets.all(double.infinity),
+      maxScale: 2.4,
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
       constrained: false,
