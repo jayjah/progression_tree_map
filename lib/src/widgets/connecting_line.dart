@@ -31,11 +31,10 @@ class ConnectingLine extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
-    final Path path = Path();
-
     final Offset center = size.center(Offset.zero);
 
     for (Map<TreeNode, List<TreeNode>> uiN in uiNodesPrep) {
+      final Path path = Path();
       TreeNode keyNode = uiN.keys.first;
       if (startFromCenter && keyNode.depth == 1) {
         path.moveTo(center.dx, center.dy);
