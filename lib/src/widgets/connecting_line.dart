@@ -27,7 +27,7 @@ class ConnectingLine extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
     final Paint lightPainter = Paint()
-      ..color = color.tintOrShade(20, darken: false)
+      ..color = color.tintOrShade(25, darken: false)
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
