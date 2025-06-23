@@ -19,31 +19,35 @@ import 'widgets/pop_up_widget.dart';
 
 /// The tree map circular UI
 class ProgressionTreeMap extends StatefulWidget {
-  const ProgressionTreeMap(
-      {super.key,
-      required this.treeNodes,
-      this.spacingFactor = 0,
-      this.maxDepthToShow = 0,
-      this.circleBoundaryColor = Colors.grey,
-      this.circleBoundaryShade = true,
-      this.circleBoundaryPaintingStyle = PaintingStyle.stroke,
-      this.nodePlacement = NodesPlacement.border,
-      this.nodeSeparationAngleFac = 1.0,
-      this.globalNodeSize,
-      this.centerNodeSize,
-      this.linesStrokeColor = Colors.white,
-      this.linesStrokeWidth = 1,
-      this.linesStartFromOrigin,
-      this.circleBoundaryStrokeWidth = 5,
-      this.nodeDecoration =
-          const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      this.interactiveViewClipBehavior = Clip.none,
-      this.activeDepth,
-      this.outerCircleColor = Colors.grey,
-      this.transformationController});
+  const ProgressionTreeMap({
+    super.key,
+    required this.treeNodes,
+    this.spacingFactor = 0,
+    this.maxDepthToShow = 0,
+    this.circleBoundaryColor = Colors.grey,
+    this.circleBoundaryShade = true,
+    this.circleBoundaryPaintingStyle = PaintingStyle.stroke,
+    this.nodePlacement = NodesPlacement.border,
+    this.nodeSeparationAngleFac = 1.0,
+    this.globalNodeSize,
+    this.centerNodeSize,
+    this.linesStrokeColor = Colors.white,
+    this.linesStrokeWidth = 1,
+    this.linesStartFromOrigin,
+    this.circleBoundaryStrokeWidth = 5,
+    this.nodeDecoration =
+        const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+    this.interactiveViewClipBehavior = Clip.none,
+    this.activeDepth,
+    this.outerCircleColor = Colors.grey,
+    this.transformationController,
+    required this.makeLineLighter,
+  });
 
   @override
   State<ProgressionTreeMap> createState() => _ProgressionTreeMapState();
+
+  final MakeLineLighter makeLineLighter;
 
   ///  The list of [TreeNode] to plot to the Ui
   final Map<TreeNode?, List<TreeNode>> treeNodes;
@@ -202,6 +206,7 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                               color: widget.linesStrokeColor,
                               strokeWidth: widget.linesStrokeWidth,
                               startFromCenter: _linesStartFromOrigin,
+                              makeLineLighter: widget.makeLineLighter,
                             ),
                             size: viewportConstraints.biggest,
                           ),

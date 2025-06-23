@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:progression_tree_map/progression_tree_map.dart';
 
 void main() {
@@ -37,6 +36,10 @@ class ProgressionTreeHome extends StatelessWidget {
             ..._titleAndMapWidgets(
                 title: "Colored Nodes & Outlines",
                 map: ProgressionTreeMap(
+                  makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+                    if (lineFrom.id == 'main') return true;
+                    return false;
+                  },
                   treeNodes: _tNodeColoredNodesAndOutlines,
                   circleBoundaryColor: Colors.grey.shade300,
                   circleBoundaryShade: false,
@@ -52,6 +55,10 @@ class ProgressionTreeHome extends StatelessWidget {
             ..._titleAndMapWidgets(
                 title: "Colored Nodes & Icons",
                 map: ProgressionTreeMap(
+                  makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+                    if (lineFrom.id == 'main') return true;
+                    return false;
+                  },
                   treeNodes: _tNodeColoredNodesAndIcons,
                   circleBoundaryPaintingStyle: PaintingStyle.fill,
                   circleBoundaryColor: Colors.deepPurpleAccent,
@@ -68,6 +75,10 @@ class ProgressionTreeHome extends StatelessWidget {
             ..._titleAndMapWidgets(
                 title: "Glowing Nodes & Background Text",
                 map: ProgressionTreeMap(
+                  makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+                    if (lineFrom.id == 'main') return true;
+                    return false;
+                  },
                   treeNodes: _tNodeGlowingNodesBackgroundTexts,
                   circleBoundaryPaintingStyle: PaintingStyle.fill,
                   circleBoundaryColor: Colors.red,
@@ -85,6 +96,10 @@ class ProgressionTreeHome extends StatelessWidget {
             ..._titleAndMapWidgets(
                 title: "Collection  & Ui Items",
                 map: ProgressionTreeMap(
+                  makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+                    if (lineFrom.id == 'main') return true;
+                    return false;
+                  },
                   treeNodes: _collectionAndUiItems,
                   circleBoundaryPaintingStyle: PaintingStyle.fill,
                   circleBoundaryColor: Colors.deepOrangeAccent,

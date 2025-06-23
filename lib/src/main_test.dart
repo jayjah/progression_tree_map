@@ -225,6 +225,7 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
     final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
       treeNodes: nodes,
+      makeLineLighter: (TreeNode? lineFrom, TreeNode lineTo) => true,
       circleBoundaryColor: Colors.grey.shade900,
       circleBoundaryShade: false,
       spacingFactor: 1.0,

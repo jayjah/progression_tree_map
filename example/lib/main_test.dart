@@ -310,6 +310,10 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
+      makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+        if (lineFrom.id == 'main') return true;
+        return false;
+      },
       treeNodes: turnVaultMove,
       circleBoundaryColor: Colors.grey.shade900,
       circleBoundaryShade: false,

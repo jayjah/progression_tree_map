@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:progression_tree_map/src/extensions/colors.dart';
+
 import '../classes/tree_node.dart';
 
+typedef MakeLineLighter = bool Function(TreeNode lineFrom, TreeNode lineTo);
+
 class ConnectingLine extends CustomPainter {
-  ConnectingLine(
-      {required this.uiNodesPrep,
-      required this.color,
-      required this.strokeWidth,
-      required this.startFromCenter});
+  ConnectingLine({
+    required this.uiNodesPrep,
+    required this.color,
+    required this.strokeWidth,
+    required this.startFromCenter,
+    required this.makeLineLighter,
+  });
 
   final List<Map<TreeNode, List<TreeNode>>> uiNodesPrep;
   final double strokeWidth;
   final Color color;
   final bool startFromCenter;
+  final MakeLineLighter makeLineLighter;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -32,10 +39,15 @@ class ConnectingLine extends CustomPainter {
             keyNode.offset.dy + (keyNode.size!) / 2);
       }
       if (uiN.values.first.isNotEmpty) {
+        TreeNode? prevNode;
         for (TreeNode tNode in uiN.values.first) {
           path.moveTo(keyNode.offset.dx + (keyNode.size!) / 2,
               keyNode.offset.dy + (keyNode.size!) / 2);
+          if (makeLineLighter(prevNode ?? keyNode, tNode)) {
+            paint.color = color.tintOrShade(0.3);
+          }
           TreeNode valueNode = tNode;
+          prevNode = valueNode;
           path.lineTo(valueNode.offset.dx + (valueNode.size!) / 2,
               valueNode.offset.dy + (valueNode.size!) / 2);
           canvas.drawPath(path, paint);

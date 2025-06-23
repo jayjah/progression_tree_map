@@ -46,6 +46,10 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
   Widget build(BuildContext context) {
     return ProgressionTreeMap(
       treeNodes: defaultMove,
+      makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+        if (lineFrom.id == 'main') return true;
+        return false;
+      },
       transformationController: _controller,
       circleBoundaryColor: Colors.grey.shade900,
       circleBoundaryShade: false,
