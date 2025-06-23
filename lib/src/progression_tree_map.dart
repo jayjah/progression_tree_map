@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:interactive_viewer_2/interactive_viewer_2.dart';
 import 'package:vector_math/vector_math.dart' as vector;
 
 import 'classes/node_container.dart';
@@ -36,7 +37,7 @@ class ProgressionTreeMap extends StatefulWidget {
       this.circleBoundaryStrokeWidth = 5,
       this.nodeDecoration =
           const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      this.interactiveViewClipBehavior = Clip.hardEdge,
+      this.interactiveViewClipBehavior = Clip.none,
       this.activeDepth,
       this.outerCircleColor = Colors.grey,
       this.transformationController});
@@ -116,32 +117,10 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
   TreeNode? _centerTreeNode;
   TreeNode? _popUpNode;
   double _activeDepthRadius = -1;
-  late BoxConstraints _viewportConstraints;
-
-  @override
-  void initState() {
-    super.initState();
-
-    /*if (widget.transformationController != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final x = ORffset(_viewportConstraints.maxWidth / 2,
-            _viewportConstraints.maxHeight / 2);
-        final offset1 = widget.transformationController!.toScene(x);
-        widget.transformationController!.value.scale(0.8);
-        final offset2 = widget.transformationController!.toScene(x);
-        final dx = offset1.dx - offset2.dx;
-        final dy = offset1.dy - offset2.dy;
-        widget.transformationController!.value.translate(-dx, -dy);
-        if (mounted) setState(() {});
-      });
-    }*/
-  }
-
   Widget _sizedBoxDependingOnPlatform({required Widget child}) {
     final Size mediaQueryData = MediaQuery.sizeOf(context);
 
     return SizedBox(
-      //dimension: math.max(mediaQueryData.width, mediaQueryData.height),
       width: mediaQueryData.width,
       height: mediaQueryData.height,
       child: child,
@@ -155,18 +134,18 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
         ? treeNodeDepth
         : (widget.maxDepthToShow < 1 ? treeNodeDepth : widget.maxDepthToShow);
 
-    return InteractiveViewer(
+    return InteractiveViewer2(
       minScale: 0.8,
-      boundaryMargin: const EdgeInsets.all(double.infinity),
+      //boundaryMargin: const EdgeInsets.all(double.infinity),
       maxScale: 2.4,
+
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
-      constrained: false,
-      alignment: Alignment.center,
+      //constrained: false,
+      //alignment: Alignment.center,
       child: _sizedBoxDependingOnPlatform(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
-            _viewportConstraints = viewportConstraints;
             final double spacing = (viewportConstraints.maxWidth / nodeDepth);
 
             _centerNodeSize = widget.centerNodeSize == null
@@ -308,7 +287,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
                 uiR.keys.first.treeNode.depth == 1 &&
                 uiR.keys.first.nodePosition == NodePosition.start)
             .length;
-    double increment = -0.5;
     _uiNodesRaw.forEachIndexed((index, nodeMap) {
       // Filter only the end nodes
       List<Map<NodeContainer, TreeNode>> mUiNodesRaw = _uiNodesRaw
@@ -344,7 +322,6 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
           keyNode =
               keyNode.updateWith(angle: baseAngle, offset: calculatedOffset);
-          increment++;
         }
         List<TreeNode> valueNodes =
             mUiNodesRaw.map((e) => e.values.first).toList();
@@ -371,11 +348,11 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
           List<TreeNode> keyNodes = mp.values.first.map((e) => e).toList();
           keyNodes.forEachIndexed((ind, vNode) {
-            double vnAngle = (mp!.keys!.first.angle -
+            double vnAngle = (mp!.keys.first.angle -
                 (15 * widget.nodeSeparationAngleFac) * ind);
 
             if (keyNodes.length > 1) {
-              final min = (mp!.keys!.first.angle) -
+              final min = (mp.keys.first.angle) -
                   ((15 * widget.nodeSeparationAngleFac) *
                       (keyNodes.length / 2));
               final max = (mp.keys.first.angle) +
