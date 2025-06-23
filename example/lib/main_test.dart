@@ -153,6 +153,7 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
   late final Map<TreeNode?, List<TreeNode>> turnVaultMove = {
     TreeNode(
       depth: 10,
+      id: 'main',
       child: Material(
         color: Colors.black,
         borderRadius: const BorderRadius.all(Radius.circular(36)),
@@ -211,6 +212,7 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
 
   final Map<TreeNode?, List<TreeNode>> nodes = {
     TreeNode(
+      id: 'main',
       child: Material(
         color: Colors.black,
         borderRadius: const BorderRadius.all(Radius.circular(36)),
@@ -311,6 +313,7 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
     final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
       makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
+        print('make line lighter called ${lineFrom.id} ${lineTo.id}');
         if (lineFrom.id == 'main') return true;
         return false;
       },

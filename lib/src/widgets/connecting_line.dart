@@ -26,6 +26,10 @@ class ConnectingLine extends CustomPainter {
       ..color = color
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
+    final Paint lightPainter = Paint()
+      ..color = color.tintOrShade(20, darken: false)
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
 
     final Path path = Path();
 
@@ -37,29 +41,36 @@ class ConnectingLine extends CustomPainter {
         path.moveTo(center.dx, center.dy);
         path.lineTo(keyNode.offset.dx + (keyNode.size!) / 2,
             keyNode.offset.dy + (keyNode.size!) / 2);
+        if (makeLineLighter(TreeNode(id: 'main'), keyNode)) {
+          canvas.drawPath(
+            path,
+            lightPainter,
+          );
+        } else
+          canvas.drawPath(path, paint);
       }
       if (uiN.values.first.isNotEmpty) {
-        TreeNode? prevNode;
+        final Path path = Path();
+
         for (TreeNode tNode in uiN.values.first) {
           path.moveTo(keyNode.offset.dx + (keyNode.size!) / 2,
               keyNode.offset.dy + (keyNode.size!) / 2);
-          if (makeLineLighter(prevNode ?? keyNode, tNode)) {
-            paint.color = color.tintOrShade(0.3);
-          }
           TreeNode valueNode = tNode;
-          prevNode = valueNode;
           path.lineTo(valueNode.offset.dx + (valueNode.size!) / 2,
               valueNode.offset.dy + (valueNode.size!) / 2);
-          canvas.drawPath(path, paint);
+          if (makeLineLighter(keyNode, valueNode)) {
+            canvas.drawPath(path, lightPainter);
+          } else
+            canvas.drawPath(path, paint);
         }
-      } else {
+      } /*else {
         canvas.drawPath(path, paint);
-      }
+      }*/
     }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+    return false;
   }
 }
