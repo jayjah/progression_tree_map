@@ -566,7 +566,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     return ProgressionTreeMap(
       makeLineLighter: (TreeNode lineFrom, TreeNode lineTo) {
         print('make line lighter called ${lineFrom.id} ${lineTo.id}');

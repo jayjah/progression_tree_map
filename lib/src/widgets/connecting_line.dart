@@ -34,33 +34,31 @@ class ConnectingLine extends CustomPainter {
     final Offset center = size.center(Offset.zero);
 
     for (Map<TreeNode, List<TreeNode>> uiN in uiNodesPrep) {
-      final Path path = Path();
       TreeNode keyNode = uiN.keys.first;
       if (startFromCenter && keyNode.depth == 1) {
-        path.moveTo(center.dx, center.dy);
-        path.lineTo(keyNode.offset.dx + (keyNode.size!) / 2,
+        final Path path1 = Path();
+
+        path1.moveTo(center.dx, center.dy);
+        path1.lineTo(keyNode.offset.dx + (keyNode.size!) / 2,
             keyNode.offset.dy + (keyNode.size!) / 2);
-        if (makeLineLighter(TreeNode(id: 'main'), keyNode)) {
-          canvas.drawPath(
-            path,
-            lightPainter,
-          );
-        } else
-          canvas.drawPath(path, paint);
+        if (makeLineLighter(TreeNode(id: 'main'), keyNode))
+          canvas.drawPath(path1, lightPainter);
+        else
+          canvas.drawPath(path1, paint);
       }
       if (uiN.values.first.isNotEmpty) {
-        final Path path = Path();
-
         for (TreeNode tNode in uiN.values.first) {
-          path.moveTo(keyNode.offset.dx + (keyNode.size!) / 2,
+          final Path path2 = Path();
+
+          path2.moveTo(keyNode.offset.dx + (keyNode.size!) / 2,
               keyNode.offset.dy + (keyNode.size!) / 2);
           TreeNode valueNode = tNode;
-          path.lineTo(valueNode.offset.dx + (valueNode.size!) / 2,
+          path2.lineTo(valueNode.offset.dx + (valueNode.size!) / 2,
               valueNode.offset.dy + (valueNode.size!) / 2);
-          if (makeLineLighter(keyNode, valueNode)) {
-            canvas.drawPath(path, lightPainter);
-          } else
-            canvas.drawPath(path, paint);
+          if (makeLineLighter(keyNode, valueNode))
+            canvas.drawPath(path2, lightPainter);
+          else
+            canvas.drawPath(path2, paint);
         }
       } /*else {
         canvas.drawPath(path, paint);
