@@ -419,18 +419,18 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
           final parents = _findParentsOfIn(vNode, total);
           //if (existedNode?.offset != Offset.zero) return null;
           if (parents.length == 2) {
-            final firstParent = parents.first.offset;
-            final secondParent = parents.last.offset;
-            final angle4 = math.atan2(firstParent.dy, firstParent.dx) -
-                math.atan2(secondParent.dy, secondParent.dx);
+            //    final firstParent = parents.first.offset;
+            //    final secondParent = parents.last.offset;
+            //    final angle4 = math.atan2(firstParent.dy, firstParent.dx) -
+            //        math.atan2(secondParent.dy, secondParent.dx);
 
-            if (vNode.useCustomAngleCalculation) {
-              vnAngle = angle4 - 5;
-            } else {
-              vnAngle =
-                  (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind) +
-                      20;
-            }
+            //    if (vNode.useCustomAngleCalculation) {
+            //      vnAngle = angle4 - 5;
+            //    } else {
+            vnAngle =
+                (keyNode.angle - (15 * widget.nodeSeparationAngleFac) * ind) +
+                    20;
+            //  }
           } else
             vnAngle = existedNode?.angle ?? 0.0;
         } else

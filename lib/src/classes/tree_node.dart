@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 /// This is the individual node that forms the tree
 class TreeNode {
-  final bool useCustomAngleCalculation;
-  final String? uniqueId;
   final String? id;
   final bool combiner;
   final String? name;
   final String? content;
   final Widget? icon;
+  final String? inactiveImagePath;
+  final String? activeImagePath;
 
   /// The [Widget] the node contains
   final Widget? child;
@@ -55,14 +55,14 @@ class TreeNode {
     this.size,
     this.firstChildPos,
     this.popUpWidget,
-    this.useCustomAngleCalculation = true,
     this.name,
     this.content,
     this.icon,
     this.id,
     this.combiner = false,
     this.childPos,
-    this.uniqueId,
+    this.activeImagePath,
+    this.inactiveImagePath,
   });
 
   TreeNode updateWith({
@@ -94,10 +94,10 @@ class TreeNode {
     bool? useCustomAngleCalculation,
     int? childPos,
     String? uniqueId,
+    String? activeImage,
+    String? inactiveImage,
   }) {
     return TreeNode(
-      useCustomAngleCalculation:
-          useCustomAngleCalculation ?? this.useCustomAngleCalculation,
       child: child ?? this.child,
       nodes: nodes ?? this.nodes,
       depth: depth ?? this.depth,
@@ -115,7 +115,8 @@ class TreeNode {
       combiner: combiner ?? this.combiner,
       id: id ?? this.id,
       childPos: childPos ?? this.childPos,
-      uniqueId: uniqueId ?? this.uniqueId,
+      activeImagePath: activeImage ?? this.activeImagePath,
+      inactiveImagePath: inactiveImage ?? this.inactiveImagePath,
     );
   }
 

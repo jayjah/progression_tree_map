@@ -310,7 +310,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
 
   final Map<TreeNode?, List<TreeNode>> catNewMove = {
     TreeNode(
-      uniqueId: 'main',
       id: 'main',
       name: 'Katze',
       content:
@@ -336,7 +335,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
                 nodes: [
                   TreeNode(
                     childPos: -20,
-                    uniqueId: 'vortex',
                     id: 'vortex',
                     child: buildTreeNodeWidget(
                       id: 'vortex',
@@ -364,7 +362,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
             nodes: [
               TreeNode(
                 childPos: -16,
-                uniqueId: 'wormcat',
                 id: 'wormcat',
                 child: buildTreeNodeWidget(
                   id: 'wormcat',
@@ -385,7 +382,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
         nodes: [
           TreeNode(
             childPos: -12,
-            uniqueId: 'rocket',
             id: 'rocket',
             child: buildTreeNodeWidget(
               id: 'rocket',
@@ -398,7 +394,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
       ),
       TreeNode(
         firstChildPos: 31,
-        uniqueId: 'dive_kong',
         id: 'dive_kong',
         child: buildTreeNodeWidget(
           id: 'dive_kong',
@@ -414,7 +409,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
             nodes: [
               TreeNode(
                 childPos: 31,
-                uniqueId: 'handstand_kong',
                 id: 'handstand_kong',
                 child: buildTreeNodeWidget(
                   id: 'handstand_kong',
@@ -429,7 +423,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
           ),
           TreeNode(
             childPos: 26,
-            uniqueId: 'rolle',
             id: 'rolle',
             child: buildTreeNodeWidget(
               id: 'rolle',
@@ -442,7 +435,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
       ),
       TreeNode(
         firstChildPos: 40,
-        uniqueId: 'long',
         id: 'long',
         child: buildTreeNodeWidget(
           id: 'long',
@@ -458,7 +450,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
         nodes: [
           TreeNode(
             childPos: 48,
-            uniqueId: 'reverse',
             id: 'reverse',
             child: buildTreeNodeWidget(
               id: 'reverse',
@@ -472,7 +463,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
       ),
       TreeNode(
         firstChildPos: 14,
-        uniqueId: 'stuetz_praezi',
         id: 'stuetz_praezi',
         child: buildTreeNodeWidget(
           id: 'stuetz_praezi',
@@ -484,7 +474,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
         nodes: [
           TreeNode(
             childPos: 14,
-            uniqueId: 'stuetz_rueber',
             id: 'stuetz_rueber',
             child: buildTreeNodeWidget(
               id: 'stuetz_rueber',
@@ -497,7 +486,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
           ),
           TreeNode(
             childPos: 20,
-            uniqueId: 'stuetz_rauf',
             id: 'stuetz_rauf',
             child: buildTreeNodeWidget(
               id: 'stuetz_rauf',
@@ -512,7 +500,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
       ),
       TreeNode(
         firstChildPos: -4,
-        uniqueId: 'praezi',
         id: 'praezi',
         child: buildTreeNodeWidget(
           id: 'praezi',
@@ -523,7 +510,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
         nodes: [
           TreeNode(
             firstChildPos: -4,
-            uniqueId: 'praezi_180',
             id: 'praezi_180',
             child: buildTreeNodeWidget(
               id: 'praezi_180',
@@ -537,7 +523,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
       ),
       TreeNode(
         firstChildPos: 4,
-        uniqueId: 'stride',
         id: 'stride',
         child: buildTreeNodeWidget(
           id: 'stride',
@@ -548,7 +533,6 @@ class _SkillTreeWidgetState extends State<SkillTreeWidget> {
         nodes: [
           TreeNode(
             childPos: 4,
-            uniqueId: 'cat_plus_move',
             id: 'cat_plus_move',
             child: buildTreeNodeWidget(
               id: 'cat_plus_move',
