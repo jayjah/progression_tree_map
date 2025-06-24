@@ -140,13 +140,10 @@ class _ProgressionTreeMapState extends State<ProgressionTreeMap> {
 
     return InteractiveViewer2(
       minScale: 0.8,
-      //boundaryMargin: const EdgeInsets.all(double.infinity),
       maxScale: 2.4,
-
       transformationController: widget.transformationController,
       clipBehavior: widget.interactiveViewClipBehavior,
-      //constrained: false,
-      //alignment: Alignment.center,
+      noMouseDragScroll: false,
       child: _sizedBoxDependingOnPlatform(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints viewportConstraints) {
